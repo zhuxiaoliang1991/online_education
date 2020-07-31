@@ -48,14 +48,14 @@ class Course(models.Model):
 
 class Module(models.Model):
     course = models.ForeignKey(Course,related_name='modules',on_delete=models.CASCADE,verbose_name='所属课程')
-    title = models.CharField(max_length=200,verbose_name='单元标题')
-    description = models.TextField(blank=True,verbose_name='单元概述')
+    title = models.CharField(max_length=200,verbose_name='章节标题')
+    description = models.TextField(blank=True,verbose_name='章节概述')
     order = OrderField(for_fields=['course'],blank=True,verbose_name='序号')
 
     class Meta:
         ordering = ['order']
         db_table = 'module'
-        verbose_name = '单元'
+        verbose_name = '章节'
         verbose_name_plural = verbose_name
     def __str__(self):
         return '{}.{}'.format(self.order,self.title)

@@ -2,22 +2,22 @@
 
 {% block title %}
   {% if object %}
-    Edit content "{{ object.title }}"
+    编辑内容"{{ object.title }}"
   {% else %}
-    Add a new content
+    增加新的内容
   {% endif %}
 {% endblock %}
 
 {% block content %}
   <h1>
     {% if object %}
-      Edit content "{{ object.title }}"
+      编辑内容 "{{ object.title }}"
     {% else %}
-      Add a new content
+      增加新的内容
     {% endif %}
   </h1>
   <div class="module">
-    <h2>Course info</h2>
+    <h2>课程信息</h2>
     <form action="" method="post" enctype="multipart/form-data">
       {{ form.as_p }}
       {% csrf_token %}

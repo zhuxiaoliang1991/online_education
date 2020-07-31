@@ -2,41 +2,41 @@
 {% load course %}
 
 {% block title %}
-  Module {{ module.order|add:1 }}: {{ module.title }}
+  章节 {{ module.order|add:1 }}: {{ module.title }}
 {% endblock %}
 
 {% block content %}
   {% with course=module.course %}
-    <h1>Course "{{ course.title }}"</h1>
+    <h1>课程 "{{ course.title }}"</h1>
     <div class="contents">
-      <h3>Modules</h3>
+      <h3>章节</h3>
       <ul id="modules">
         {% for m in course.modules.all %}
           <li data-id="{{ m.id }}" {% if m == module %}class="selected"{% endif %}>
             <a href="{% url "module_content_list" m.id %}">
               <span>
-                Module <span class="order">{{ m.order|add:1 }}</span>
+                章节 <span class="order">{{ m.order|add:1 }}</span>
               </span>
               <br>
               {{ m.title }}
             </a>
           </li>
         {% empty %}
-          <li>No modules yet.</li>
+          <li>没有章节信息</li>
         {% endfor %}
       </ul>
-      <p><a href="{% url "course_module_update" course.id %}">Edit modules</a></p>
+      <p><a href="{% url "course_module_update" course.id %}">编辑章节信息</a></p>
     </div>
     <div class="module">
-      <h2>Module {{ module.order|add:1 }}: {{ module.title }}</h2>
-      <h3>Module contents:</h3>
+      <h2>章节 {{ module.order|add:1 }}: {{ module.title }}</h2>
+      <h3>章节内容:</h3>
 
       <div id="module-contents">
         {% for content in module.contents.all %}
           <div data-id="{{ content.id }}">
             {% with item=content.item %}
               <p>{{ item }} ({{ item|model_name }})</p>
-              <a href="{% url "module_content_update" module.id item|model_name item.id %}">Edit</a>
+              <a href="{% url "module_content_update" module.id item|model_name item.id %}">编辑</a>
               <form action="{% url "module_content_delete" content.id %}" method="post">
                 <input type="submit" value="Delete">
                 {% csrf_token %}
@@ -44,15 +44,15 @@
             {% endwith %}
           </div>
         {% empty %}
-          <p>This module has no contents yet.</p>
+          <p>该章节没有任何内容</p>
         {% endfor %}
       </div>
-      <h3>Add new content:</h3>
+      <h3>添加新的内容:</h3>
       <ul class="content-types">
-        <li><a href="{% url "module_content_create" module.id "text" %}">Text</a></li>
-        <li><a href="{% url "module_content_create" module.id "image" %}">Image</a></li>
-        <li><a href="{% url "module_content_create" module.id "video" %}">Video</a></li>
-        <li><a href="{% url "module_content_create" module.id "file" %}">File</a></li>
+        <li><a href="{% url "module_content_create" module.id "text" %}">文本</a></li>
+        <li><a href="{% url "module_content_create" module.id "image" %}">图片</a></li>
+        <li><a href="{% url "module_content_create" module.id "video" %}">视频</a></li>
+        <li><a href="{% url "module_content_create" module.id "file" %}">文件</a></li>
       </ul>
     </div>
   {% endwith %}
@@ -61,7 +61,7 @@
 {% block domready %}
   $('#modules').sortable({
       stop: function(event, ui) {
-          modules_order = {};
+          var modules_order = {};
           $('#modules').children().each(function(){
               // update the order field
               $(this).find('.order').text($(this).index() + 1);
@@ -80,7 +80,7 @@
 
   $('#module-contents').sortable({
       stop: function(event, ui) {
-          contents_order = {};
+          var contents_order = {};
           $('#module-contents').children().each(function(){
               // associate the module's id with its order
               contents_order[$(this).data('id')] = $(this).index();

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 from slugify import slugify
 from django.contrib.contenttypes.models import  ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -31,6 +32,7 @@ class Course(models.Model):
     slug = models.SlugField(max_length=200,blank=True,verbose_name='短url')
     overview = models.TextField(verbose_name='课程概括')
     created = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
+    students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
 
     class Meta:
         db_table = 'course'
@@ -86,6 +88,9 @@ class ItemBase(models.Model):
 
     def __str__(self):
         return self.title
+
+    def render(self):
+        return render_to_string('courses/content/{}.html'.format(self._meta.model_name),{'item':self})
 
 class Text(ItemBase):
     content = models.TextField(verbose_name='教学文本')
